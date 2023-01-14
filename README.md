@@ -21,31 +21,31 @@ docker push zeyesm/java-app-qr
 - `better to pull the docker image before as pulling at kube creation doesn't always work`
 
 # kubernetes deployment commands
-kubectl create -f kube/qr-nodeport.yaml
-kubectl create -f kube/qr-cluster-service.yaml
-kubectl create -f kube/qr-deploiement.yaml
-kubectl get deployments
-kubectl get pods -o wide
-kubectl get services
+- kubectl create -f kube/qr-nodeport.yaml
+- kubectl create -f kube/qr-cluster-service.yaml
+- kubectl create -f kube/qr-deploiement.yaml
+- kubectl get deployments
+- kubectl get pods -o wide
+- kubectl get services
 
 # Kubernetes service activation commands
-minikube service qrjava-nodeport # on a separate terminal
-kubectl port-forward service/qrjava-nodeport 30080:8080
+- minikube service qrjava-nodeport # on a separate terminal
+- kubectl port-forward service/qrjava-nodeport 30080:8080
 
 # Kubernetes service deactivation commands
-kubectl delete services/qrjava-nodeport
-kubectl delete deployments/qrjava
+- kubectl delete services/qrjava-nodeport
+- kubectl delete deployments/qrjava
 
 # kubernetes useful commands 
-kubectl exec -it qrjava-776774968-5hhnz --namespace default -- bash
-kubectl logs qrjava-776774968-5hhnz --namespace default
-kubectl describe pod qrjava-776774968-5hhnz
+- kubectl exec -it qrjava-776774968-5hhnz --namespace default -- bash
+- kubectl logs qrjava-776774968-5hhnz --namespace default
+- kubectl describe pod qrjava-776774968-5hhnz
 
 
 ### Usage
-curl  http://localhost:8080/qr-code --header "Content-Type: application/json" -d '{"text":"mael"}' --output output.png
+- curl  http://localhost:8080/qr-code --header "Content-Type: application/json" -d '{"text":"mael"}' --output output.png
 
-Invoke-WebRequest -Uri http://localhost:8080/qr-code -Method Post -ContentType "application/json" -Body '{"text":"mael"}' -OutFile output.png
+- Invoke-WebRequest -Uri http://localhost:8080/qr-code -Method Post -ContentType "application/json" -Body '{"text":"mael"}' -OutFile output.png
 
 ```
 // returns dummy string just to verify its working
