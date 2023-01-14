@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: qrjava-pod
+  labels:
+    app: qrjava
+    type: qrcode-front
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: qrjava
+  template:
+    metadata:
+      labels:
+        app: qrjava
+    spec:
+      containers:
+      - name: qrjava
+        image: eu.gcr.io/qrcode-374515/zeyesm/java-app-qr
+        imagePullPolicy :  IfNotPresent
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 200m
+            memory: 256Mi
