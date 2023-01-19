@@ -10,17 +10,19 @@ spec:
   selector:
     matchLabels:
       app: qrjava
+      type: qrcode-generator
   template:
     metadata:
       labels:
         app: qrjava
+        type: qrcode-generator
     spec:
       containers:
       - name: qrjava
         image: eu.gcr.io/qrcode-374515/zeyesm/java-app-qr
         imagePullPolicy :  IfNotPresent
-        ports:
-        - containerPort : 8080
+        #ports:
+        #- containerPort : 8080
         env:
         - name: "PORT"
           value: "8080"
