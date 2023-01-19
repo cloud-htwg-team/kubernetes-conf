@@ -1,0 +1,30 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+ name: qrgen-ingress
+spec:
+  backend:
+    service:
+      name: qrgen-default
+      port:
+        number: 80
+  rules:
+  - host: adamradvan.eu
+    http:
+      paths:
+      - path: /qr
+        pathType: Prefix
+        backend:
+          service:
+            name: qr-cluster-service
+            port:
+              number: 8080
+      - path: /history
+        pathType: Prefix
+        backend:
+          service:
+            name: his-loadbalancer
+            port:
+              number: 8888
+        
+    

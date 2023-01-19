@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: his-cluster-service
+  labels:
+    app: qrhistory
+    type: qrcode-history
+spec:
+  type: ClusterIP
+  selector:
+    app: qrhistory
+    type: qrcode-history
+  ports:
+  - port: 8888
+    targetPort: 8888
+  
+  
+

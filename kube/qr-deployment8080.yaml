@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: qr-deployment
+  labels:
+    app: qrjava
+    type: qrcode-generator
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: qrjava
+  template:
+    metadata:
+      labels:
+        app: qrjava
+    spec:
+      containers:
+      - name: qrjava
+        image: eu.gcr.io/qrcode-374515/zeyesm/java-app-qr
+        imagePullPolicy :  IfNotPresent
+        ports:
+        - containerPort : 8080
+        env:
+        - name: "PORT"
+          value: "8080"
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 200m
+            memory: 256Mi

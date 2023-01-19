@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: his-deployment
+  labels:
+    app: qrhistory
+    type: qrcode-history
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: qrhistory
+      type: qrcode-history
+  template:
+    metadata:
+      labels:
+        app: qrhistory
+        type: qrcode-history
+    spec:
+      containers:
+      - name: qrhistory
+        image: eu.gcr.io/qrcode-374515/zeyesm/history-service/image@sha256:327a5e4ffc0ff7037bfcd470a29569a1324ccd5f7890f71b71b388ea846b45cd
+        ports:
+        - containerPort : 8888
+        imagePullPolicy :  Always
+        env:
+        - name: "PORT"
+          value: "8888"
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 200m
+            memory: 256Mi

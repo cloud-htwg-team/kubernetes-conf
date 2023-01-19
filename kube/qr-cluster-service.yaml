@@ -1,14 +1,15 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: qrjava-clusterip
+  name: qr-cluster-service
   labels:
     app: qrjava
-    type: qrcode-front
+    type: qrcode-generator
 spec:
   type: ClusterIP
   selector:
     app: qrjava
+    type: qrcode-generator
   ports:
   - port: 8080
     targetPort: 8080
