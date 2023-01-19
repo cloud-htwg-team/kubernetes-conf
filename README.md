@@ -12,18 +12,21 @@ HTWG Cloud Application Development Project
   - `-d` is for `detached mode`
   
 # tag image with a repository name on dockerhub
-docker tag qrcode_generator zeyesm/java-app-qr
+- docker tag qrcode_generator zeyesm/java-app-qr
 # push image to dockerhub
-docker push zeyesm/java-app-qr
+- docker push zeyesm/java-app-qr
 
-# for local tests
+# for local setup 
 - `install minikube`
-- `better to pull the docker image before as pulling at kube creation doesn't always work`
+- minkube start
+- `install kubectl`
+check if it's pointing to minikube :
+- kubectl config current-context 
 
 # kubernetes deployment commands
 - kubectl create -f kube/qr-nodeport.yaml
 - kubectl create -f kube/qr-cluster-service.yaml
-- kubectl create -f kube/qr-deploiement.yaml
+- kubectl create -f kube/qr-deployment.yaml
 - kubectl get deployments
 - kubectl get pods -o wide
 - kubectl get services
@@ -43,9 +46,9 @@ docker push zeyesm/java-app-qr
 
 
 ### Usage
-- curl  http://localhost:8080/qr-code --header "Content-Type: application/json" -d '{"text":"mael"}' --output output.png
+curl  http://localhost:8080/qr-code --header "Content-Type: application/json" -d '{"text":"mael"}' --output output.png
 
-- Invoke-WebRequest -Uri http://localhost:8080/qr-code -Method Post -ContentType "application/json" -Body '{"text":"mael"}' -OutFile output.png
+Invoke-WebRequest -Uri http://localhost:8080/qr-code -Method Post -ContentType "application/json" -Body '{"text":"mael"}' -OutFile output.png
 
 ```
 // returns dummy string just to verify its working
@@ -66,3 +69,8 @@ Content-Type: application/json
 ### Potentional QR code libs:
 - JS https://github.com/oblakstudio/qr-code-styling
 - Python https://www.geeksforgeeks.org/how-to-generate-qr-codes-with-a-custom-logo-using-python/
+
+### Google info
+- @google-cloud/firestore
+- @google-cloud/storage
+- create a key for each user
