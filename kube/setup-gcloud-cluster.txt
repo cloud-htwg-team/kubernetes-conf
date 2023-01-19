@@ -1,0 +1,31 @@
+gcloud components install kubectl
+gcloud auth login
+gcloud config set project PROJECT_ID
+
+###make sure you are in the right context, not on local machine
+kubectl config current-context
+
+###create a cluster 
+gcloud container clusters create qr-code-app --release-channel None --zone europe-west3-a --node-locations europe-west3-a
+###connect to the cluster
+gcloud container clusters get-credentials qr-code-app --zone europe-west3-a
+
+###for testing, add a pod to the cluster with the docker image in containers of gcloud
+kubectl run qrcode-java-app --image eu.gcr.io/qrcode-374515/zeyesm/java-app-qr --cluster gke_qrcode-374515_europe-west3-a_qr-code-app
+
+###add your own kubes from manifest to the cluster, works for pods and services
+kubectl apply -f qr-nodeport.yaml
+
+https://cloud.google.com/kubernetes-engine/docs/how-to/exposing-apps
+
+###allow port 8080 for testing
+gcloud compute firewall-rules create test-node-port --allow tcp:30080
+
+###Test your configuration
+kubectl get nodes -o wide ###to get an external IP address
+
+###In your webbrowser : Node-External-IP:30080
+
+
+
+
