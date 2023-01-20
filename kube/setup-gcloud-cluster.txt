@@ -26,6 +26,23 @@ kubectl get nodes -o wide ###to get an external IP address
 
 ###In your webbrowser : Node-External-IP:30080
 
+###add an ingress
+download helm
+helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+helm repo update
+helm install nginx-ingress ingress-nginx/ingress-nginx
+kubectl get deployment nginx-ingress-ingress-nginx-controller
+kubectl get service nginx-ingress-ingress-nginx-controller
+###keep the ip in mind or in a variable and add it to the dns of your web domain
+kubectl apply -f ingress-resource.yaml
+
+
+#delete an ingress
+kubectl delete -f ingress-resource.yaml
+helm del nginx-ingress
+
+
+
 
 
 
