@@ -1,30 +1,36 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
- name: qrgen-ingress
+ name: qreach-ingress
+ annotations:
+   kubernetes.io/ingress.class: "nginx"
+   kubernetes.io/ingress.global-static-ip-name: "ingress-webapps"
 spec:
-  backend:
-    service:
-      name: qrgen-default
-      port:
-        number: 80
   rules:
-  - host: adamradvan.eu
+  - host: qreach.adamradvan.eu
     http:
       paths:
-      - path: /qr
-        pathType: Prefix
+      - pathType: Prefix 
+        path: "/qr-code"
         backend:
           service:
             name: qr-cluster-service
             port:
               number: 8080
-      - path: /history
-        pathType: Prefix
+      - pathType: Prefix 
+        path: "/history"
         backend:
           service:
-            name: his-loadbalancer
+            name: his-cluster-service
             port:
               number: 8888
+      - pathType: Prefix 
+        path: "/test"
+        backend:
+          service:
+            name: his-cluster-service
+            port:
+              number: 8888
+      
         
     
