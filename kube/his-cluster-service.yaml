@@ -7,11 +7,12 @@ metadata:
     type: qrcode-history
 spec:
   type: ClusterIP
+  clusterIP: 10.92.3.57
   selector:
     app: qrhistory
     type: qrcode-history
   ports:
-  - port: 8888
+  - port: 80
     targetPort: 8888
   
   

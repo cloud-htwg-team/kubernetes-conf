@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
       - name: qrhistory
-        image: eu.gcr.io/qrcode-374515/zeyesm/history-service/image@sha256:327a5e4ffc0ff7037bfcd470a29569a1324ccd5f7890f71b71b388ea846b45cd
+        image: eu.gcr.io/qrcode-374515/history-service
         ports:
         - containerPort : 8888
         imagePullPolicy :  Always

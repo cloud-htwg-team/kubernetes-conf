@@ -10,6 +10,7 @@ spec:
   - host: qreach.adamradvan.eu
     http:
       paths:
+      #service qr-cluster-service
       - pathType: Prefix 
         path: "/qr-code"
         backend:
@@ -17,8 +18,16 @@ spec:
             name: qr-cluster-service
             port:
               number: 8080
+      #service his-cluster-service 
       - pathType: Prefix 
         path: "/history"
+        backend:
+          service:
+            name: his-cluster-service
+            port:
+              number: 8888
+      - pathType: Prefix 
+        path: "/history/*"
         backend:
           service:
             name: his-cluster-service
@@ -31,6 +40,9 @@ spec:
             name: his-cluster-service
             port:
               number: 8888
+      #service front-end
+      
+      
       
         
     
