@@ -1,0 +1,80 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+ name: qreach-ingress
+ annotations:
+    enable-underscores-in-headers: "true"
+    kubernetes.io/ingress.class: "nginx"
+    kubernetes.io/ingress.global-static-ip-name: "ingress-webapps"
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      proxy_set_header Id-Token: $http_id_token;
+    #nginx.ingress.kubernetes.io/auth-url: http://qreach.adamradvan.eu/login
+    #nginx.ingress.kubernetes.io/auth-response-headers: Id-Token
+spec:
+  #tls:
+  #- hosts:
+  #  - qreach.adamradvan.eu
+  #  secretName: qreach-secret-tls
+  #defaultBackend:
+    #service:
+      #pathType: Prefix
+      #path: "/login"
+      #name: auth-cluster-service
+      #port:
+        #number: 8082
+  rules:
+  - host: qreach.adamradvan.eu
+    http:
+      paths:
+      #service qr-cluster-service
+      - pathType: Prefix 
+        path: "/secure/qr-code"
+        backend:
+          service:
+            name: qr-cluster-service
+            port:
+              number: 8080
+              
+      #service auth-cluster-service
+      - pathType: Prefix 
+        path: "/login"
+        backend:
+          service:
+            name: auth-cluster-service
+            port:
+              number: 8082
+      - pathType: Prefix 
+        path: "/verify"
+        backend:
+          service:
+            name: auth-cluster-service
+            port:
+              number: 8082
+      #service his-cluster-service 
+      - pathType: Prefix 
+        path: "/secure/history"
+        backend:
+          service:
+            name: his-cluster-service
+            port:
+              number: 8888
+      - pathType: Prefix 
+        path: "/secure/history/*"
+        backend:
+          service:
+            name: his-cluster-service
+            port:
+              number: 8888
+      - pathType: Prefix 
+        path: "/secure/test"
+        backend:
+          service:
+            name: his-cluster-service
+            port:
+              number: 8888
+      #service front-end
+
+      
+      
+        
+    

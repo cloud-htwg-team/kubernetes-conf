@@ -1,0 +1,52 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+ name: qreach-ingress
+ annotations:
+   kubernetes.io/ingress.class: "nginx"
+   kubernetes.io/ingress.global-static-ip-name: "ingress-webapps-dev"
+spec:
+  tls:
+  - hosts:
+    - qreach.adamradvan.eu
+    secretName: ingress-tls
+  rules:
+  - host: qreach-dev.adamradvan.eu
+    http:
+      paths:
+      #service qr-cluster-service
+      - pathType: Prefix 
+        path: "/qr-code"
+        backend:
+          service:
+            name: qr-cluster-service-test
+            port:
+              number: 80
+      #service his-cluster-service 
+      - pathType: Prefix 
+        path: "/history"
+        backend:
+          service:
+            name: his-cluster-service-test
+            port:
+              number: 80
+      - pathType: Prefix 
+        path: "/history/*"
+        backend:
+          service:
+            name: his-cluster-service-test
+            port:
+              number: 80
+      - pathType: Prefix 
+        path: "/test"
+        backend:
+          service:
+            name: his-cluster-service-test
+            port:
+              number: 80
+      #service front-end
+
+      
+      
+        
+    

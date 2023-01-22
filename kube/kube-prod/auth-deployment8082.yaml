@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth-deployment
+  labels:
+    app: auth
+    type: authentication
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: auth
+      type: authentication
+  template:
+    metadata:
+      labels:
+        app: auth
+        type: authentication
+    spec:
+      containers:
+      - name: auth
+        image: eu.gcr.io/qrcode-374515/auth-service
+        imagePullPolicy :  Always
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 200m
+            memory: 256Mi
