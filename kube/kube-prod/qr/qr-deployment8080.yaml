@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: qr-deployment
+  labels:
+    app: qrjava
+    type: qrcode-generator
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: qrjava
+      type: qrcode-generator
+  template:
+    metadata:
+      labels:
+        app: qrjava
+        type: qrcode-generator
+    spec:
+      containers:
+      - name: qrjava
+        image: eu.gcr.io/qrcode-374515/qrcode-service
+        imagePullPolicy :  Always
+        #ports:
+        #- containerPort : 8080
+        env:
+        - name: HISTORY_SERVICE_SERVER
+          value: "10.92.3.57"
+        - name: HISTORY_SERVICE_PORT
+          value: "8888"
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 200m
+            memory: 256Mi

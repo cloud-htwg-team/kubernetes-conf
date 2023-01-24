@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: auth-configmap
+  namespace: default
+data:
+  global-auth-url: "http://qreach.adamradvan.eu/verify"
+  global-auth-redirect-url: "http://qreach.adamradvan.eu/login"
+  global-auth-redirect-code: "301"
+  no-auth-locations: "/verify,/login,/"
+  global-auth-always-set-cookie : "true"
+  global-auth-signin: "http://qreach.adamradvan.eu/login"

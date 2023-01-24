@@ -7,25 +7,49 @@ metadata:
     kubernetes.io/ingress.class: "nginx"
     kubernetes.io/ingress.global-static-ip-name: "ingress-webapps"
     nginx.ingress.kubernetes.io/configuration-snippet: |
-      proxy_set_header Id-Token: $http_id_token;
-    #nginx.ingress.kubernetes.io/auth-url: http://qreach.adamradvan.eu/login
-    #nginx.ingress.kubernetes.io/auth-response-headers: Id-Token
+      more_set_headers Id-Token $http_id_token;
+     #set $dataflag 0;
+
+     #if ($http_id_token){
+      #set $dataflag 1;
+      #}
+
+      #if ( $dataflag = 1 ){
+      #set $service_name "auth-cluster-service";
+      #}
+    #   if ($http_id_token = "PL") { proxy_pass http://auth-cluster-service.default.svc.cluster.local:8082/verify; }
+    #nginx.org/server-snippets: |
+    #  location /* {
+    #    return 308 /verify;
+    #  }  
+    #nginx.ingress.kubernetes.io/rewrite-target: /$2
+    #nginx.ingress.kubernetes.io/rewrite-target: "http://qreach.adamradvan.eu/login"
+    #nginx.ingress.kubernetes.io/permanent-redirect: http://qreach.adamradvan.eu/login
+    #nginx.ingress.kubernetes.io/auth-url: http://auth-cluster-service.default.svc.cluster.local:8082/verify
+    nginx.ingress.kubernetes.io/auth-response-headers: $http_id_token
 spec:
+  #ingressClassName: nginx
   #tls:
   #- hosts:
   #  - qreach.adamradvan.eu
-  #  secretName: qreach-secret-tls
+  #  secretName: qreach-server-tls
   #defaultBackend:
     #service:
-      #pathType: Prefix
-      #path: "/login"
       #name: auth-cluster-service
       #port:
         #number: 8082
   rules:
+  #
   - host: qreach.adamradvan.eu
     http:
       paths:
+      - pathType: Prefix 
+        path: "/"
+        backend:
+          service:
+            name: auth-cluster-service
+            port:
+              number: 8082
       #service qr-cluster-service
       - pathType: Prefix 
         path: "/secure/qr-code"
@@ -59,20 +83,22 @@ spec:
             port:
               number: 8888
       - pathType: Prefix 
-        path: "/secure/history/*"
-        backend:
-          service:
-            name: his-cluster-service
-            port:
-              number: 8888
-      - pathType: Prefix 
         path: "/secure/test"
         backend:
           service:
             name: his-cluster-service
             port:
-              number: 8888
+              number: 80
       #service front-end
+
+
+#status:
+#  loadBalancer:
+#    ingress:
+#    - ip: 35.246.134.137
+
+
+
 
       
       

@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: his-deployment
+  labels:
+    app: qrhistory
+    type: qrcode-history
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: qrhistory
+      type: qrcode-history
+  template:
+    metadata:
+      labels:
+        app: qrhistory
+        type: qrcode-history
+    spec:
+      containers:
+      - name: qrhistory
+        image: eu.gcr.io/qrcode-374515/history-service
+        ports:
+        - containerPort : 8888
+        imagePullPolicy :  Always
+        env:
+        - name: "PORT"
+          value: "8888"
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 200m
+            memory: 256Mi
