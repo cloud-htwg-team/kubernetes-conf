@@ -1,0 +1,45 @@
+apiVersion: k8s.nginx.org/v1
+kind: VirtualServer
+metadata:
+  name: auth-proxy
+  namespace: default
+spec:
+  host: qreach.adamradvan.eu
+  #virtualServerName: "auth-proxy"
+  upstreams:
+  - name: auth-cluster-service
+    service: auth-cluster-service
+    port: 8082
+    lb-method: ip_hash
+  - name: qr-cluster-service
+    service: qr-cluster-service
+    port: 8080
+    lb-method: ip_hash
+  - name: his-cluster-service
+    service: his-cluster-service
+    port: 8888
+    lb-method: ip_hash
+
+    #actions
+  routes:
+  - path: /
+    action:
+      redirect: 
+        url: http://qreach.adamradvan.eu/login
+        code: 301
+  - path: /verify
+    action:
+      return:
+        code: 200
+        body: "OK"
+  - path: /secure/qr-code
+    action:
+      pass: qr-cluster-service
+  - path: /secure/history
+    action:
+      pass: his-cluster-service
+
+
+  
+
+    

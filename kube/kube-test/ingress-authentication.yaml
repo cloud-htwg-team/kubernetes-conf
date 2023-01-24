@@ -1,0 +1,40 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+ name: qreach-ingress-redirect-authentication
+ #namespace: authentication
+ annotations:
+    enable-underscores_in_headers: "true"
+    kubernetes.io/ingress.class: "nginx"
+    #kubernetes.io/ingress.global-static-ip-name: "ingress-webapps"
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      proxy_set_header Id-Token: $http_id_token;
+    #nginx.ingress.kubernetes.io/rewrite-target: "http://qreach.adamradvan.eu/login"
+    #nginx.ingress.kubernetes.io/permanent-redirect: http://qreach.adamradvan.eu/login
+    #nginx.ingress.kubernetes.io/auth-url: http://qreach.adamradvan.eu/login
+    #nginx.ingress.kubernetes.io/auth-signin: http://qreach.adamradvan.eu/login
+    nginx.ingress.kubernetes.io/auth-response-headers: Id-Token
+spec:
+  #ingressClassName: nginx
+  #tls:
+  #- hosts:
+  #  - qreach.adamradvan.eu
+  #  secretName: qreach-server-tls
+  #defaultBackend:
+  #  service:
+  #  name: auth-cluster-service
+  #    pathType: Prefix
+  #    path: "/login"
+  #    port:
+  #      number: 8082
+  rules:
+  - host: authentication.qreach.adamradvan.eu
+    http:
+      paths:
+      - pathType: Prefix 
+        path: "/login"
+        backend:
+          service:
+            name: auth-cluster-service
+            port:
+              number: 8082    
