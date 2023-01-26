@@ -74,6 +74,13 @@ spec:
             name: auth-cluster-service
             port:
               number: 8082
+      - pathType: Prefix
+        path: "/sign-in"
+        backend:
+          service:
+            name: auth-cluster-service
+            port:
+              number: 8082
       #service his-cluster-service 
       - pathType: Prefix 
         path: "/secure/history"
@@ -90,6 +97,22 @@ spec:
             port:
               number: 80
       #service front-end
+
+      #service tenants
+      - pathType: Prefix 
+        path: "/secure/tenants"
+        backend:
+          service:
+            name: ten-cluster-service
+            port:
+              number: 8080
+      - pathType: Prefix 
+        path: "/tenants"
+        backend:
+          service:
+            name: ten-cluster-service
+            port:
+              number: 8080
 
 
 #status:
