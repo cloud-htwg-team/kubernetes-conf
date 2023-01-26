@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: front-cluster-service
+  labels:
+    app: frontend
+    type: front-service
+spec:
+  type: ClusterIP
+  clusterIP: 10.92.13.1
+  selector:
+    app: frontend
+    type: front-service
+  ports:
+  - port: 80
+    targetPort: 80
