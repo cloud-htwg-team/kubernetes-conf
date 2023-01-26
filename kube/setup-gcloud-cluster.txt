@@ -35,14 +35,28 @@ kubectl get deployment nginx-ingress-ingress-nginx-controller
 kubectl get service nginx-ingress-ingress-nginx-controller
 ###keep the ip in mind or in a variable and add it to the dns of your web domain
 kubectl apply -f ingress-resource.yaml
+kubectl describe ingress-ressource 
 
+kubectl create secret tls qreach-ingress-tls --key qreach-ingress-tls.key --cert qreach-ingress-tls.crt
+
+#add virtualserver
+#in helm repo:
+git clone https://github.com/nginxinc/kubernetes-ingress/
+cd kubernetes-ingress/deployments
+kubectl apply -f common/crds/k8s.nginx.org_virtualservers.yaml
+kubectl apply -f common/crds/k8s.nginx.org_virtualserverroutes.yaml
+kubectl apply -f common/crds/k8s.nginx.org_transportservers.yaml
+kubectl apply -f common/crds/k8s.nginx.org_policies.yaml
 
 #delete an ingress
 kubectl delete -f ingress-resource.yaml
 helm del nginx-ingress
 
+#setup tls key with linux and openssl
+openssl req -new -x509 -days 9999 -keyout ca-key.pem -out ca-crt.pem
+openssl genrsa -out server-key.pem 2048
+openssl req -new -key server-key.pem -out server-csr.pem # the CN must be your dns
+openssl x509 -req -days 9999 -in server-csr.pem -CA ca-crt.pem -CAkey ca-key.pem -CAcreateserial -out server-crt.pem
 
-
-
-
-
+##ensuite de retour dans le gcloud shell
+kubectl create secret tls qreach-ingress-tls --key server-key.pem --cert server-crt.pem
