@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ten-deployment
+  labels:
+    app: tenants
+    type: tenants-service
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: tenants
+      type: tenants-service
+  template:
+    metadata:
+      labels:
+        app: tenants
+        type: tenants-service
+    spec:
+      containers:
+      - name: tenants
+        image: eu.gcr.io/qrcode-374515/tenant-service
+        imagePullPolicy :  Always
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 200m
+            memory: 256Mi
