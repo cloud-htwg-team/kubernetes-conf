@@ -1,0 +1,51 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+ name: qreach-ingress-tenantx
+ namespace: tenantx
+ annotations:
+    enable-underscores_in_headers: "true"
+    kubernetes.io/ingress.class: "nginx"
+    #kubernetes.io/ingress.global-static-ip-name: "ingress-webapps"
+    nginx.ingress.kubernetes.io/configuration-snippet: |
+      proxy_set_header Id-Token: $http_id_token;
+    #nginx.ingress.kubernetes.io/rewrite-target: "http://qreach.adamradvan.eu/login"
+    #nginx.ingress.kubernetes.io/permanent-redirect: http://qreach.adamradvan.eu/login
+    #nginx.ingress.kubernetes.io/auth-url: http://qreach.adamradvan.eu/login
+    #nginx.ingress.kubernetes.io/auth-signin: http://qreach.adamradvan.eu/login
+    nginx.ingress.kubernetes.io/auth-response-headers: Id-Token
+spec:
+  #ingressClassName: nginx
+  #tls:
+  #- hosts:
+  #  - qreach.adamradvan.eu
+  #  secretName: qreach-server-tls
+  #defaultBackend:
+  #  service:
+  #  name: auth-cluster-service
+  #    pathType: Prefix
+  #    path: "/login"
+  #    port:
+  #      number: 8082
+  rules:
+  - host: tenantx.qreach.adamradvan.eu
+    http:
+      paths:
+      - pathType: Prefix 
+        path: "/secure/qr-code"
+        backend:
+          service:
+            name: qr-cluster-service
+            port:
+              number: 8080
+      - pathType: Prefix
+        path: "/secure/history"
+        backend:
+          service:
+            name: his-cluster-service-tenantx
+            port:
+              number: 8888
+status:
+  loadBalancer:
+    ingress:
+    - ip: 34.141.92.169

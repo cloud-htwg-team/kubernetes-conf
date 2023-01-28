@@ -2,6 +2,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
  name: qreach-dev-ingress
+ namespace: default
  annotations:
     enable-underscores-in-headers: "true"
     kubernetes.io/ingress.class: "nginx"
@@ -12,7 +13,7 @@ metadata:
     #nginx.ingress.kubernetes.io/rewrite-target: "http://qreach.adamradvan.eu/login"
     #nginx.ingress.kubernetes.io/permanent-redirect: http://qreach.adamradvan.eu/login
     #nginx.ingress.kubernetes.io/auth-url: http://qreach.adamradvan.eu/login
-    #nginx.ingress.kubernetes.io/auth-response-headers: Id-Token
+    nginx.ingress.kubernetes.io/auth-response-headers: Id-Token
 spec:
   #ingressClassName: nginx
   #tls:
@@ -26,16 +27,24 @@ spec:
         #number: 8082
   rules:
   #
-  - host: qreach-dev.adamradvan.eu
+  - host: tenant1.qreach.adamradvan.eu
     http:
       paths:
       - pathType: Prefix 
         path: "/"
         backend:
           service:
-            name: auth-cluster-service
+            name: front-cluster-service
             port:
-              number: 8082
+              number: 80
+       #service qr-cluster-service
+      - pathType: Prefix 
+        path: "/secure/qr-code"
+        backend:
+          service:
+            name: qr-cluster-service-test
+            port:
+              number: 8080
               
       #service auth-cluster-service
       - pathType: Prefix 
@@ -46,12 +55,72 @@ spec:
             port:
               number: 8082
       - pathType: Prefix 
-        path: "/secure/*"
+        path: "/verify"
         backend:
           service:
-            name: auth-proxy
+            name: auth-cluster-service
+            port:
+              number: 8082
+      - pathType: Prefix
+        path: "/sign-up"
+        backend:
+          service:
+            name: auth-cluster-service
+            port:
+              number: 8082
+      - pathType: Prefix
+        path: "/create-tenant"
+        backend:
+          service:
+            name: auth-cluster-service
+            port:
+              number: 8082
+      - pathType: Prefix
+        path: "/list-tenants"
+        backend:
+          service:
+            name: auth-cluster-service
+            port:
+              number: 8082
+      - pathType: Prefix
+        path: "/delete-tenant"
+        backend:
+          service:
+            name: auth-cluster-service
+            port:
+              number: 8082
+      #service his-cluster-service 
+      - pathType: Prefix 
+        path: "/secure/history"
+        backend:
+          service:
+            name: his-cluster-service
+            port:
+              number: 8888
+      - pathType: Prefix 
+        path: "/secure/test"
+        backend:
+          service:
+            name: his-cluster-service
             port:
               number: 80
+      #service front-end
+
+      #service tenants
+      - pathType: Prefix 
+        path: "/secure/tenants"
+        backend:
+          service:
+            name: ten-cluster-service
+            port:
+              number: 8080
+      - pathType: Prefix 
+        path: "/tenants"
+        backend:
+          service:
+            name: ten-cluster-service
+            port:
+              number: 8080
 
    
 
@@ -59,7 +128,7 @@ spec:
 status:
   loadBalancer:
     ingress:
-    - ip: 34.159.27.234
+    - ip: 34.141.92.169
 
 
 

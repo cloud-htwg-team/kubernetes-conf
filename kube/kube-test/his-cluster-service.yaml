@@ -7,7 +7,7 @@ metadata:
     type: qrcode-history
 spec:
   type: ClusterIP
-  clusterIP: 10.28.10.181
+  #clusterIP: 10.28.10.181
   selector:
     app: qrhistory
     type: qrcode-history
