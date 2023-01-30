@@ -18,7 +18,7 @@ HTWG Cloud Application Development Project
 
 ## for local setup 
 - install minikube`
-`minkube start`
+- `minkube start`
 - install kubectl
 check if it's pointing to minikube :
 `kubectl config current-context` 
@@ -109,3 +109,24 @@ check if it's pointing to minikube :
  - `gcloud iam service-accounts create iam-kube-account`
  - `gcloud iam service-accounts add-iam-policy-binding iam-kube-account@qrcode-374515.iam.gserviceaccount.com --role roles/iam.workloadIdentityUser --member "serviceAccount:qrcode-374515.svc.id.goog[default/default]"`
 - `kubectl annotate serviceaccount default--namespace default iam.gke.io/gcp-service-account=iam-kube-account@qrcode-374515.iam.gserviceaccount.com`
+
+# multi-tenancy
+- install terrraform
+- add terraform to path
+- install helm
+- add helm to path
+
+### create a namepsace
+- `kubectl create namespace tenant`
+- cross namespace communication
+- add service type External name to a yaml file in the new namespace, the route must be:
+- `servicename.default.svc.cluster.local`
+
+
+### Terraform
+- create a service account with the right access
+- create a key for the service account
+- add the key to the terraform folder
+`terraform apply -auto-approve`
+- modify the tenant name value
+`terraform apply -var="namespace=<name input>" -auto-approve`
