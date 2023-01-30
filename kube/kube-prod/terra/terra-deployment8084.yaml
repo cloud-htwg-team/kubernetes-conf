@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: terra-deployment
+  namespace: default
+  labels:
+    app: terrragen
+    type: terraform-generator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: terrragen
+      type: terraform-generator
+  template:
+    metadata:
+      labels:
+        app: terrragen
+        type: terraform-generator
+    spec:
+      serviceAccountName: default
+      nodeSelector:
+        iam.gke.io/gke-metadata-server-enabled: "true"
+      containers:
+      - name: terragen
+        image: eu.gcr.io/qrcode-374515/terraform-service
+        imagePullPolicy :  Always
+        #ports:
+        #- containerPort : 8080
+        resources:
+          requests:
+            cpu: 100m
+            memory: 128Mi
+          limits:
+            cpu: 200m
+            memory: 256Mi

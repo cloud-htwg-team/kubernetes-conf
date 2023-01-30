@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: terra-cluster-service
+  namespace: default
+  labels:
+    app: terragen
+    type: terraform-generator
+spec:
+  type: ClusterIP
+  clusterIP: 10.92.2.64
+  selector:
+    app: terrragen
+    type: terraform-generator
+  ports:
+  - port: 80
+    targetPort: 8084
+
+  
+  
+
