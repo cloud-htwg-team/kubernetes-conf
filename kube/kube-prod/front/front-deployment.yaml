@@ -2,11 +2,12 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: front-deployment
+  namespace: default
   labels:
     app: frontend
     type: front-service
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: frontend
