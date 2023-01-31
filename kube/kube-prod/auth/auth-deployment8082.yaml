@@ -2,11 +2,12 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: auth-deployment
+  namespace: default
   labels:
     app: auth
     type: authentication
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: auth
@@ -17,10 +18,18 @@ spec:
         app: auth
         type: authentication
     spec:
+      serviceAccountName: default
+      nodeSelector:
+        iam.gke.io/gke-metadata-server-enabled: "true"
       containers:
       - name: auth
         image: eu.gcr.io/qrcode-374515/auth-service
         imagePullPolicy :  Always
+        env:
+        - name: TERRAFORM_SERVICE_SERVER
+          value: "10.92.2.64"
+        - name: TERRAFORM_SERVICE_PORT
+          value: "8084"
         resources:
           requests:
             cpu: 100m
