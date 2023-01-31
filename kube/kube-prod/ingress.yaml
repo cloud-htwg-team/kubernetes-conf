@@ -2,6 +2,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
  name: qreach-ingress
+ namespace: default
  annotations:
     enable-underscores-in-headers: "true"
     kubernetes.io/ingress.class: "nginx"
@@ -47,9 +48,9 @@ spec:
         path: "/"
         backend:
           service:
-            name: auth-cluster-service
+            name: front-cluster-service
             port:
-              number: 8082
+              number: 80
       #service qr-cluster-service
       - pathType: Prefix 
         path: "/secure/qr-code"
@@ -75,7 +76,28 @@ spec:
             port:
               number: 8082
       - pathType: Prefix
-        path: "/sign-in"
+        path: "/sign-up"
+        backend:
+          service:
+            name: auth-cluster-service
+            port:
+              number: 8082
+      - pathType: Prefix
+        path: "/create-tenant"
+        backend:
+          service:
+            name: auth-cluster-service
+            port:
+              number: 8082
+      - pathType: Prefix
+        path: "/list-tenants"
+        backend:
+          service:
+            name: auth-cluster-service
+            port:
+              number: 8082
+      - pathType: Prefix
+        path: "/delete-tenant"
         backend:
           service:
             name: auth-cluster-service
@@ -105,14 +127,29 @@ spec:
           service:
             name: ten-cluster-service
             port:
-              number: 8080
+              number: 8888
       - pathType: Prefix 
         path: "/tenants"
         backend:
           service:
             name: ten-cluster-service
             port:
-              number: 8080
+              number: 8888
+      - pathType: Prefix 
+        path: "/secure/tenants/*"
+        backend:
+          service:
+            name: ten-cluster-service
+            port:
+              number: 8888
+      #terraform service
+      - pathType: Prefix 
+        path: "/secure/apply"
+        backend:
+          service:
+            name: terra-cluster-service
+            port:
+              number: 8084
 
 
 #status:
