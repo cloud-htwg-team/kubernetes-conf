@@ -108,13 +108,6 @@ spec:
 
       #service tenants
       - pathType: Prefix 
-        path: "/secure/tenants"
-        backend:
-          service:
-            name: ten-cluster-service
-            port:
-              number: 8080
-      - pathType: Prefix 
         path: "/tenants"
         backend:
           service:

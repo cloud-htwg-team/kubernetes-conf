@@ -122,21 +122,7 @@ spec:
 
       #service tenants
       - pathType: Prefix 
-        path: "/secure/tenants"
-        backend:
-          service:
-            name: ten-cluster-service
-            port:
-              number: 8888
-      - pathType: Prefix 
         path: "/tenants"
-        backend:
-          service:
-            name: ten-cluster-service
-            port:
-              number: 8888
-      - pathType: Prefix 
-        path: "/secure/tenants/*"
         backend:
           service:
             name: ten-cluster-service
