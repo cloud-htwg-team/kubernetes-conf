@@ -27,7 +27,11 @@ spec:
         - name: HISTORY_SERVICE_SERVER
           value: "10.92.3.57"
         - name: HISTORY_SERVICE_PORT
-          value: "8888"
+          value: "80"
+        - name: TENANT_SERVICE_SERVER
+          value: "10.92.12.1"
+        - name: TENANT_SERVICE_PORT
+          value: "80"
         resources:
           requests:
             cpu: 100m
